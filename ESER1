@@ -1,0 +1,86 @@
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+using namespace std;
+int main(int argc, char **argv) {
+  if (argc < 3) {
+    cout << " Uso del programma" << argv[0] << "<n_data> <filename>" << endl;
+    return -1;
+  }
+  int ndata = atoi(argv[1]);
+  double *data = new double[ndata];
+  char *filename = argv[2];
+
+  ifstream fin;
+  fin.open(filename);
+
+  if (!fin) {
+    cout << "non riesco aprire il file " << filename << endl;
+    exit(0);
+
+  } else {
+    for (int k = 0; k < ndata; k++) {
+      fin >> data[k];
+      if (fin.eof()) {
+        cout << "End of life reached exiting" << endl;
+        exit(0);
+      }
+    }
+  }
+cout<<" ----Set di dati:----";
+  for (int k = 0; k < ndata; k++) {
+    cout<< data[k]<<endl;
+    if((k+1) % 10 == 0)
+    cout<<endl;
+  }
+  double media = 0;
+  double sum = 0;
+
+  for (int i = 0; i < ndata; i++) {
+    sum = sum + data[i];
+  }
+  media = sum / ndata;
+  cout << "La media del set di dati risulta essere: "<< " " << media << endl;
+
+  double quad = 0;
+  for (int i = 0; i < ndata; i++) {
+    quad = quad + (data[i] * data[i]);
+  }
+  double var = 0;
+
+  var = quad / ndata - (media * media);
+
+  cout << "La varianza del set di dati risulta essere:" <<" " << var << endl;
+
+  double *vcopia = new double[ndata];
+  for (int k = 0; k < ndata; k++) vcopia[k] = data[k];
+    
+    int imin =0;
+  double min = 0;
+    
+ 
+  for (int j = 0; j < ndata - 1; j++) {
+    min = j ;
+    min=vcopia[imin];
+    for(int i=j+1;i<ndata;i++){
+if (vcopia[i] < min) {
+     imin = vcopia[i];
+      imin = i;
+    }
+    
+    }
+   double c = vcopia[j];
+  vcopia[j] = vcopia[imin];
+  vcopia[imin] = c;
+  }
+ 
+
+double mediana = 0;
+if (ndata % 2 == 0) {
+  mediana = (vcopia[ndata / 2 - 1] + vcopia[ndata / 2]) / 2;
+} else {
+  mediana = vcopia[ndata / 2];
+}
+cout << "La mediana del set di dati risulta essere:"<<" " << mediana << endl;
+return 0;
+}
